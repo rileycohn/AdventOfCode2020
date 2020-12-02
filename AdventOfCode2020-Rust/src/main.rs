@@ -4,7 +4,6 @@ use crate::day2::Day2;
 
 mod utils;
 mod day1;
-mod day2;
 
 fn main() {
 
@@ -14,10 +13,6 @@ fn main() {
         1 => {
             let day1 = Day1 {};
             println!("Solution: {}", day1.solve());
-        }
-        2 => {
-            let day2 = Day2 {};
-            println!("Solution: {}", day2.solve());
         }
         _ => {}
     }
