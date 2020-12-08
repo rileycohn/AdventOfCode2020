@@ -11,3 +11,5 @@ Day 4 - Java
 Day 5 - Python
 
 Day 6 - Ruby
+
+Day 7 - Perl
