@@ -13,26 +13,66 @@ if ($handle) {
 
     // Now we have the seats in a 2d array
 
+    // Directions array
+    $directions = array();
+    array_push($directions, array(-1, -1));
+    array_push($directions, array(0, -1));
+    array_push($directions, array(1, 1));
+    array_push($directions, array(-1, 0));
+    array_push($directions, array(1, 0));
+    array_push($directions, array(-1, 1));
+    array_push($directions, array(0, 1));
+    array_push($directions, array(1, -1));
+
+
+
     // Loop
     while(true) {
         // Create copy
         $new_copy = $seats;
         $did_change = false;
 
-        for ($x = 0; $x <= count($seats); $x++) {
-            for ($y = 0; $y <= count($seats[$x]); $y++) {
-                $curr_seat = $seats[$x][$y];
+        for ($row = 0; $row < count($seats); $row++) {
+            for ($column = 0; $column < count($seats[$row]); $column++) {
+                $curr_seat = $seats[$row][$column];
                 // ignore floor seats
                 if ($curr_seat == 'L') {
                     // Check for adjacent seats.
                     // If any are occupied, do nothing
                     // If they are all open, change to #
                     $all_free = true;
-                    for ($dx = -1; $dx <= 1; $dx++) {
-                        for ($dy = -1; $dy <= 1; $dy++) {
-                            if ($seats[$x + $dx][$y + $dy] == '#') {
-                                $all_free = false;
+                    foreach ($directions as $dir) {
+                        $dirx = $dir[0];
+                        $diry = $dir[1];
+                        while (true) {
+                            $val = $seats[$row + $dirx][$column + $diry];
+                            if ($val && $val != '.') {
+                                if ($val == '#') {
+                                    $all_free = false;
+                                }
+
                                 break;
+                            } else {
+                                if ($dirx != 0) {
+                                    if ($dirx < 0) {
+                                        $dirx--;
+                                    } else {
+                                        $dirx++;
+                                    }
+                                    if ($row + $dirx >= count($seats) || $row + $dirx < 0) {
+                                        break;
+                                    }
+                                }
+                                if ($diry != 0) {
+                                    if ($diry < 0) {
+                                        $diry--;
+                                    } else {
+                                        $diry++;
+                                    }
+                                    if ($column + $diry >= count($seats[$row]) || $column + $diry < 0) {
+                                        break;
+                                    }
+                                }
                             }
                         }
 
@@ -42,25 +82,49 @@ if ($handle) {
                     }
 
                     if ($all_free) {
-                        $new_copy[$x][$y] = '#';
+                        $new_copy[$row][$column] = '#';
                         $did_change = true;
                     }
                 } else if ($curr_seat == '#') {
-                    // If there are 4 L's adjacent, change to L
-                    $total_occupied = 0;
-                    for ($dx = -1; $dx <= 1; ++$dx) {
-                        for ($dy = -1; $dy <= 1; ++$dy) {
-                            if ($dx != 0 || $dy != 0) {
-                                if ($seats[$x + $dx][$y + $dy] == '#') {
-                                    $total_occupied++;
+                    // If there are 5 #'s adjacent, change to L
+                    $total_occ = 0;
+                    foreach ($directions as $dir) {
+                        $dirx = $dir[0];
+                        $diry = $dir[1];
+                        while (true) {
+                            $val = $seats[$row + $dirx][$column + $diry];
+                            if ($val && $val != '.') {
+                                if ($val == '#') {
+                                    $total_occ++;
                                 }
-
+                                break;
+                            } else {
+                                if ($dirx != 0) {
+                                    if ($dirx < 0) {
+                                        $dirx--;
+                                    } else {
+                                        $dirx++;
+                                    }
+                                    if ($row + $dirx >= count($seats) || $row + $dirx < 0) {
+                                        break;
+                                    }
+                                }
+                                if ($diry != 0) {
+                                    if ($diry < 0) {
+                                        $diry--;
+                                    } else {
+                                        $diry++;
+                                    }
+                                    if ($column + $diry >= count($seats[$row]) || $column + $diry < 0) {
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
 
-                    if ($total_occupied > 3) {
-                        $new_copy[$x][$y] = 'L';
+                    if ($total_occ > 4) {
+                        $new_copy[$row][$column] = 'L';
                         $did_change = true;
                     }
                 }
@@ -72,6 +136,15 @@ if ($handle) {
         }
 
         $seats = $new_copy;
+
+        for ($x = 0; $x <= count($seats); $x++) {
+            for ($y = 0; $y <= count($seats[$x]); $y++) {
+                echo $seats[$x][$y];
+            }
+            echo "\n";
+        }
+
+        echo "\n";
     }
 
     // Now iterate seats one more time and count open seats
