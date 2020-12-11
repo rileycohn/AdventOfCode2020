@@ -17,3 +17,5 @@ Day 7 - Perl
 Day 8 - Javascript
 
 Day 9 - Lua
+
+Day 10 - Go

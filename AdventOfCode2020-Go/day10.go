@@ -15,27 +15,25 @@ func main() {
 		log.Fatalf("readLines: %s", err)
 	}
 
-	var oneJolt = 0
-	var threeJolts = 0
+	lines = append(lines, 0)
 
 	sort.Ints(lines)
+	lines = append(lines, lines[len(lines) - 1] + 3)
+	sort.Ints(lines)
 
-	var prev = 0
-	for _, line := range lines {
-		if line - prev == 1 {
-			oneJolt++
-		} else {
-			threeJolts++
+	paths := make(map[int]int)
+	paths[0] = 1
+	for i := 0; i < len(lines); i++ {
+		var curr = lines[i]
+		// Check up to 3 places forward to see how many are valid
+		for j := 1; j < 4; j++ {
+			if i + j < len(lines) && lines[i + j] - curr <= 3 {
+				paths[i + j] += paths[i]
+			}
 		}
-		prev = line
 	}
 
-	// Adapter can do 3 more jolts
-	threeJolts++
-
-	fmt.Println(oneJolt)
-	fmt.Println(threeJolts)
-	fmt.Println(oneJolt * threeJolts)
+	fmt.Println(paths[len(lines) - 1])
 }
 
 func readLines(path string) ([]int, error) {
