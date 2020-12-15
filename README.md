@@ -23,3 +23,5 @@ Day 10 - Go
 Day 11 - PHP
 
 Day 12 - Dart
+
+Day 13 - Scala
