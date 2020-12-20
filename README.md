@@ -33,3 +33,5 @@ Day 15 - C#
 Day 16 - F#
 
 Day 17 - Groovy
+
+Day 18 - Julia
