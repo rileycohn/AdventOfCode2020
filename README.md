@@ -35,3 +35,5 @@ Day 16 - F#
 Day 17 - Groovy
 
 Day 18 - Julia
+
+Day 19 - Raku
